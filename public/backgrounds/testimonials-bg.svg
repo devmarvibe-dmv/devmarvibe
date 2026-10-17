@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1000" width="1920" height="1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity=".04"/>
+    </pattern>
+    <radialGradient id="gTeal" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#1b8888" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#1b8888" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#1a4d8a" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#1a4d8a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1920" height="1000" fill="#0b1f3a"/>
+  <rect width="1920" height="1000" fill="url(#grid)"/>
+  <circle cx="1700" cy="80" r="520" fill="url(#gTeal)"/>
+  <circle cx="180" cy="940" r="520" fill="url(#gBlue)"/>
+
+  <g fill="none" stroke-width="1.5">
+    <circle cx="1760" cy="60" r="220" stroke="#28a5cc" stroke-opacity=".28"/>
+    <circle cx="1760" cy="60" r="340" stroke="#28a5cc" stroke-opacity=".16"/>
+    <circle cx="1760" cy="60" r="470" stroke="#28a5cc" stroke-opacity=".1" stroke-dasharray="4 12"/>
+    <circle cx="120" cy="960" r="200" stroke="#5cc8c4" stroke-opacity=".2"/>
+    <circle cx="120" cy="960" r="320" stroke="#5cc8c4" stroke-opacity=".1" stroke-dasharray="4 12"/>
+  </g>
+  <circle cx="1548" cy="120" r="7" fill="#28a5cc"/>
+  <circle cx="316" cy="912" r="6" fill="#5cc8c4"/>
+
+  <!-- oversized quote mark -->
+  <text x="1500" y="900" font-family="Georgia, serif" font-size="520" fill="#ffffff" fill-opacity=".035">”</text>
+</svg>

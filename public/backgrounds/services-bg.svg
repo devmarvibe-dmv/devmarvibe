@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#0b1f3a" fill-opacity=".09"/>
+    </pattern>
+    <radialGradient id="mask" cx="50%" cy="50%" r="55%">
+      <stop offset="0" stop-color="#f5f8fa" stop-opacity=".95"/>
+      <stop offset=".7" stop-color="#f5f8fa" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#f5f8fa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1920" height="1200" fill="#f5f8fa"/>
+  <rect width="1920" height="1200" fill="url(#dots)"/>
+
+  <!-- circuit traces from the edges -->
+  <g fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 180 H160 L220 240 H360" stroke="#1b8888" stroke-opacity=".28"/>
+    <path d="M0 260 H110 L170 320 H250" stroke="#1a4d8a" stroke-opacity=".18"/>
+    <path d="M0 900 H200 L260 840 H330" stroke="#1a4d8a" stroke-opacity=".2"/>
+    <path d="M1920 140 H1740 L1680 200 H1560" stroke="#1a4d8a" stroke-opacity=".2"/>
+    <path d="M1920 960 H1760 L1700 1020 H1580" stroke="#1b8888" stroke-opacity=".28"/>
+    <path d="M1920 1040 H1820 L1780 1080 H1700" stroke="#28a5cc" stroke-opacity=".22"/>
+  </g>
+  <g fill="#ffffff" stroke-width="2">
+    <circle cx="360" cy="240" r="6" stroke="#1b8888" stroke-opacity=".5"/>
+    <circle cx="250" cy="320" r="5" stroke="#1a4d8a" stroke-opacity=".35"/>
+    <circle cx="330" cy="840" r="6" stroke="#1a4d8a" stroke-opacity=".4"/>
+    <circle cx="1560" cy="200" r="6" stroke="#1a4d8a" stroke-opacity=".4"/>
+    <circle cx="1580" cy="1020" r="6" stroke="#1b8888" stroke-opacity=".5"/>
+    <circle cx="1700" cy="1080" r="5" stroke="#28a5cc" stroke-opacity=".45"/>
+  </g>
+
+  <!-- corner orbit -->
+  <g fill="none" stroke-width="1.5">
+    <circle cx="1880" cy="560" r="180" stroke="#1b8888" stroke-opacity=".18"/>
+    <circle cx="1880" cy="560" r="270" stroke="#28a5cc" stroke-opacity=".12" stroke-dasharray="4 10"/>
+    <circle cx="40" cy="620" r="140" stroke="#1a4d8a" stroke-opacity=".14"/>
+  </g>
+
+  <!-- keep the card grid area quiet -->
+  <rect width="1920" height="1200" fill="url(#mask)"/>
+</svg>

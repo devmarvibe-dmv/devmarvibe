@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#0b1f3a" stroke-opacity=".045"/>
+    </pattern>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5f8fa"/>
+      <stop offset=".62" stop-color="#ffffff"/>
+    </linearGradient>
+    <radialGradient id="gCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#2994cc" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#2994cc" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gTeal" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#18938e" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#18938e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="rise" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#1a4d8a" stop-opacity="0"/>
+      <stop offset=".45" stop-color="#1a4d8a" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#1b8888" stop-opacity=".5"/>
+    </linearGradient>
+    <linearGradient id="riseFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#28a5cc" stop-opacity=".09"/>
+      <stop offset="1" stop-color="#28a5cc" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".7"/>
+      <stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#base)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+
+  <circle cx="1540" cy="170" r="560" fill="url(#gCyan)"/>
+  <circle cx="290" cy="700" r="460" fill="url(#gTeal)"/>
+
+  <!-- orbit system behind the hero card (right half) -->
+  <g fill="none" stroke-width="1.5">
+    <circle cx="1440" cy="500" r="300" stroke="#1b8888" stroke-opacity=".22"/>
+    <circle cx="1440" cy="500" r="420" stroke="#1a4d8a" stroke-opacity=".12"/>
+    <circle cx="1440" cy="500" r="560" stroke="#28a5cc" stroke-opacity=".12" stroke-dasharray="4 12"/>
+  </g>
+  <circle cx="1652" cy="288" r="8" fill="#1b8888"/>
+  <circle cx="1022" cy="560" r="6" fill="#28a5cc" fill-opacity=".8"/>
+  <circle cx="1820" cy="780" r="5" fill="#1a4d8a" fill-opacity=".6"/>
+
+  <!-- rising growth line along the bottom -->
+  <path d="M0 1010 L260 960 L470 985 L720 900 L930 930 L1180 820 L1380 850 L1640 720 L1920 600 L1920 1080 L0 1080 Z" fill="url(#riseFill)"/>
+  <path d="M0 1010 L260 960 L470 985 L720 900 L930 930 L1180 820 L1380 850 L1640 720 L1920 600" fill="none" stroke="url(#rise)" stroke-width="2.5" stroke-linejoin="round"/>
+  <g fill="#ffffff" stroke="#1b8888" stroke-opacity=".55" stroke-width="2">
+    <circle cx="720" cy="900" r="5"/><circle cx="1180" cy="820" r="5"/><circle cx="1640" cy="720" r="6"/>
+  </g>
+
+  <!-- small code accents, top-left and right, away from the headline -->
+  <g font-family="JetBrains Mono, Consolas, monospace" font-size="16" fill="#0b1f3a" fill-opacity=".16">
+    <text x="1700" y="960">deploy --prod ✓</text>
+    <text x="96" y="120">&lt;build what's next /&gt;</text>
+  </g>
+
+  <!-- calm the left side where the headline sits -->
+  <rect width="1920" height="1080" fill="url(#fadeLeft)"/>
+</svg>

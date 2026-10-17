@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1000" width="1920" height="1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#0b1f3a" stroke-opacity=".045"/>
+    </pattern>
+    <radialGradient id="gCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#2994cc" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#2994cc" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1b8888" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#1a4d8a" stop-opacity=".25"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1000" fill="#f5f8fa"/>
+  <rect width="1920" height="1000" fill="url(#grid)"/>
+  <circle cx="0" cy="500" r="620" fill="url(#gCyan)"/>
+
+  <g fill="none" stroke-width="1.5">
+    <circle cx="-40" cy="500" r="260" stroke="#1a4d8a" stroke-opacity=".18"/>
+    <circle cx="-40" cy="500" r="380" stroke="#1b8888" stroke-opacity=".14" stroke-dasharray="4 12"/>
+    <circle cx="1900" cy="40" r="160" stroke="#1b8888" stroke-opacity=".18"/>
+  </g>
+  <circle cx="220" cy="390" r="7" fill="#1a4d8a" fill-opacity=".7"/>
+
+  <!-- route that arrives at a destination pin: "let's connect" -->
+  <path d="M60 860 C 320 780, 420 940, 700 860 S 1040 740, 1180 800" fill="none" stroke="url(#route)" stroke-width="2.5" stroke-dasharray="2 12" stroke-linecap="round"/>
+  <circle cx="60" cy="860" r="9" fill="#ffffff" stroke="#1b8888" stroke-width="3"/>
+  <g transform="translate(1180 800)">
+    <circle r="22" fill="#1b8888" fill-opacity=".12"/>
+    <circle r="9" fill="#1b8888"/>
+    <circle r="3.5" fill="#ffffff"/>
+  </g>
+
+  <g font-family="JetBrains Mono, Consolas, monospace" font-size="16" fill="#0b1f3a" fill-opacity=".16">
+    <text x="96" y="120">POST /contact → 201</text>
+  </g>
+</svg>
