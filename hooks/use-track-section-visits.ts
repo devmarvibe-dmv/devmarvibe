@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { trackVisit } from '@/lib/api/visitors';
+import { detectDeviceType, trackVisit } from '@/lib/api/visitors';
 
 export function useTrackSectionVisits(sectionIds: string[]) {
   const seen = useRef<Set<string>>(new Set());
@@ -16,6 +16,7 @@ export function useTrackSectionVisits(sectionIds: string[]) {
           trackVisit({
             page: id,
             url: window.location.href,
+            deviceType: detectDeviceType(),
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           }).catch(() => {});
         }

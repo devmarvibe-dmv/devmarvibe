@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo';
+import { IS_PRODUCTION, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   keywords: ['web development', 'mobile app development', 'branding and design', 'digital marketing', 'SEO agency', 'DevMarvibe'],
   authors: [{ name: SITE_NAME }],
-  robots: { index: true, follow: true },
+  robots: { index: IS_PRODUCTION, follow: IS_PRODUCTION },
   alternates: { canonical: '/' },
   manifest: '/site.webmanifest',
   icons: {
