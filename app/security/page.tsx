@@ -5,7 +5,9 @@ import Link from 'next/link';
 import { AlertTriangle, ArrowLeft, Check, ShieldCheck } from 'lucide-react';
 import { submitVulnerabilityReport, type VulnerabilitySeverity } from '@/lib/api/vulnerability-reports';
 import { SiteStatusScreen } from '@/components/site-status-screen';
-import { SiteVersion } from '@/components/site-version';
+import { BrandLogo } from '@/components/brand-logo';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { SubpageFooter } from '@/components/subpage-footer';
 import { useBackendStatus } from '@/hooks/use-backend-status';
 import { useTrackVisit } from '@/hooks/use-track-visit';
 import { BACKEND_ORIGIN, getApiErrorMessage } from '@/lib/api/client';
@@ -63,9 +65,9 @@ export default function SecurityPage() {
   }
 
   return <main className="min-h-screen bg-surface text-ink">
-    <header className="border-b border-slate-200 bg-white"><div className="site-shell flex h-20 items-center justify-between"><Link href="/" className="text-sm font-bold text-teal-700"><ArrowLeft size={16} className="mr-2 inline" /> Back to DevMarvibe</Link><Link href="/"><img src="/Main_Logo.png" alt="DevMarVibe" className="h-14 w-auto object-contain" /></Link></div></header>
+    <header className="border-b border-slate-200 bg-white"><div className="site-shell flex h-20 items-center justify-between"><Link href="/" className="tap-target gap-2 text-sm font-bold text-teal-700"><ArrowLeft size={16} aria-hidden="true" /> Back<span className="hidden sm:inline">&nbsp;to DevMarvibe</span></Link><Link href="/"><BrandLogo height={56} priority /></Link></div></header>
     <div className="site-shell py-14 sm:py-20"><div className="mx-auto max-w-3xl">
-      <div className="mb-10 max-w-2xl"><p className="eyebrow">Responsible disclosure</p><h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Report a security issue.</h1><p className="mt-5 text-lg leading-8 text-slate-500">Found a vulnerability in a DevMarvibe site or app? Tell us privately and our team will investigate. Please don&apos;t share it publicly until we&apos;ve had a chance to fix it.</p></div>
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Report a security issue', href: '/security' }]} /><div data-reveal className="mb-10 max-w-2xl"><p className="eyebrow">Responsible disclosure</p><h1 className="mt-4 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Report a security issue.</h1><p className="mt-5 text-lg leading-8 text-slate-500">Found a vulnerability in a DevMarvibe site or app? Tell us privately and our team will investigate. Please don&apos;t share it publicly until we&apos;ve had a chance to fix it.</p></div>
       {trackId ? <div className="rounded-[28px] border border-teal-200 bg-white p-10 text-center shadow-xl shadow-slate-900/5">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-100 text-teal-700"><Check size={30} /></div>
         <h2 className="mt-6 text-2xl font-semibold">Thank you for your report.</h2>
@@ -93,6 +95,6 @@ export default function SecurityPage() {
         <button className="button-primary mt-8 w-full sm:w-auto" type="submit" disabled={submitting}>{submitting ? 'Sending…' : <>Send report <ShieldCheck size={17} /></>}</button>
       </form>}
     </div></div>
-    <footer className="border-t border-slate-200 bg-white py-6"><div className="site-shell flex flex-col gap-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between"><p>© {new Date().getFullYear()} DevMarvibe. All rights reserved.</p><SiteVersion /></div></footer>
+    <SubpageFooter />
   </main>;
 }

@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const ACCODE = 'DMV';
 
 /** Every DMV Console response uses this envelope; `respcode` matches the HTTP status. */
@@ -39,33 +37,67 @@ export function onApiVersion(listener: (version: string) => void): () => void {
   return () => versionListeners.delete(listener);
 }
 
+/** A non-2xx response, or a request that never got one (`status` 0). `data` is the parsed body when there was one. */
+export class ApiError extends Error {
+  constructor(message: string, readonly status: number, readonly data: Partial<ApiEnvelope<unknown>> | null) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+type Params = Record<string, string | number | boolean | undefined>;
+type RequestOptions = { params?: Params };
+
+const REQUEST_TIMEOUT_MS = 15_000;
+
+/**
+ * Small fetch-based client (replaces axios, keeping its `{ data }` result shape).
+ * Adds `accode` to every request: as a query parameter on GET, in the JSON or
+ * multipart body otherwise. Failed requests reject with ApiError and log nothing,
+ * so a backend outage never fills a visitor's console with errors.
+ */
 export function createApiClient(baseURL: string) {
-  const client = axios.create({ baseURL });
-
-  client.interceptors.request.use((config) => {
-    if (config.method === 'get') {
-      config.params = { accode: ACCODE, ...config.params };
-    } else if (config.data instanceof FormData) {
-      if (!config.data.has('accode')) config.data.append('accode', ACCODE);
-    } else {
-      config.data = { accode: ACCODE, ...(config.data ?? {}) };
+  async function request<T>(method: 'GET' | 'POST', path: string, params?: Params, body?: unknown): Promise<{ data: T }> {
+    const url = new URL(`${baseURL}${path}`);
+    if (method === 'GET') {
+      Object.entries({ accode: ACCODE, ...params }).forEach(([key, value]) => {
+        if (value !== undefined) url.searchParams.set(key, String(value));
+      });
     }
-    return config;
-  });
 
-  client.interceptors.response.use(
-    (response) => {
-      recordApiVersion(response.data?.version);
-      return response;
-    },
-    (error) => {
-      recordApiVersion(error?.response?.data?.version);
-      console.error(`[api:${baseURL}]`, error?.response?.data ?? error.message);
-      return Promise.reject(error);
+    let payload: BodyInit | undefined;
+    const headers: Record<string, string> = { Accept: 'application/json' };
+    if (body instanceof FormData) {
+      if (!body.has('accode')) body.append('accode', ACCODE);
+      payload = body;
+    } else if (method !== 'GET') {
+      headers['Content-Type'] = 'application/json';
+      payload = JSON.stringify({ accode: ACCODE, ...(body as object | undefined) });
     }
-  );
 
-  return client;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(url, { method, headers, body: payload, signal: controller.signal });
+    } catch (error) {
+      throw new ApiError(error instanceof Error ? error.message : 'Network request failed', 0, null);
+    } finally {
+      clearTimeout(timer);
+    }
+
+    const json = await response.json().catch(() => null);
+    recordApiVersion(json?.version);
+    if (!response.ok) {
+      throw new ApiError(json?.respdesc || `Request failed with status ${response.status}`, response.status, json);
+    }
+    return { data: json as T };
+  }
+
+  return {
+    get: <T>(path: string, options?: RequestOptions) => request<T>('GET', path, options?.params),
+    post: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>('POST', path, options?.params, body),
+  };
 }
 
 const DEFAULT_BACKEND_ORIGIN = 'https://console.devmarvibe.com';
@@ -87,8 +119,8 @@ export function resolveFileUrl(path: string | null | undefined): string | null {
 
 /** The `respdesc` of a failed call, when the console sent one — safe to show to visitors. */
 export function getApiErrorMessage(error: unknown): string | null {
-  if (axios.isAxiosError(error)) {
-    const respdesc = (error.response?.data as Partial<ApiEnvelope<unknown>> | undefined)?.respdesc;
+  if (error instanceof ApiError) {
+    const respdesc = error.data?.respdesc;
     if (typeof respdesc === 'string' && respdesc.trim()) return respdesc;
   }
   return null;
