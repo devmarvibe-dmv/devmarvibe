@@ -49,6 +49,35 @@ type Params = Record<string, string | number | boolean | undefined>;
 type RequestOptions = { params?: Params };
 
 const REQUEST_TIMEOUT_MS = 15_000;
+/** Pauses before each GET retry (so up to 3 attempts in total). */
+const GET_RETRY_DELAYS_MS = [700, 2000];
+
+/**
+ * The console slows to several seconds and starts returning 500s when a page
+ * fires a dozen requests at once (each one can start its own serverless
+ * instance and database connection). Requests therefore queue, at most
+ * MAX_CONCURRENT in flight, in the order the page made them.
+ */
+const MAX_CONCURRENT = 4;
+let inFlight = 0;
+const waiting: (() => void)[] = [];
+
+async function acquireSlot(): Promise<void> {
+  if (inFlight < MAX_CONCURRENT) {
+    inFlight += 1;
+    return;
+  }
+  await new Promise<void>((resolve) => waiting.push(resolve));
+}
+
+function releaseSlot() {
+  const next = waiting.shift();
+  if (next) next();
+  else inFlight -= 1;
+}
+
+/** Identical GETs made while one is already in flight share its result (React strict mode, the reachability probe, two sections using the same data). */
+const pendingGets = new Map<string, Promise<unknown>>();
 
 /**
  * Small fetch-based client (replaces axios, keeping its `{ data }` result shape).
@@ -75,27 +104,58 @@ export function createApiClient(baseURL: string) {
       payload = JSON.stringify({ accode: ACCODE, ...(body as object | undefined) });
     }
 
+    // The timeout starts once the request leaves the queue, not while it waits for a slot.
+    await acquireSlot();
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
     let response: Response;
+    let json: { version?: string; respdesc?: string } | null;
     try {
       response = await fetch(url, { method, headers, body: payload, signal: controller.signal });
+      json = await response.json().catch(() => null);
     } catch (error) {
       throw new ApiError(error instanceof Error ? error.message : 'Network request failed', 0, null);
     } finally {
       clearTimeout(timer);
+      releaseSlot();
     }
 
-    const json = await response.json().catch(() => null);
     recordApiVersion(json?.version);
     if (!response.ok) {
-      throw new ApiError(json?.respdesc || `Request failed with status ${response.status}`, response.status, json);
+      throw new ApiError(json?.respdesc || `Request failed with status ${response.status}`, response.status, json as Partial<ApiEnvelope<unknown>> | null);
     }
     return { data: json as T };
   }
 
+  /**
+   * GETs are retried on a network failure or 5xx — the console can return a 500
+   * or answer slowly while it cold-starts, and one failed read would otherwise
+   * hide a whole section for that visit. POSTs are never retried, so a form can't
+   * be submitted twice.
+   */
+  async function getWithRetry<T>(path: string, params?: Params): Promise<{ data: T }> {
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        return await request<T>('GET', path, params);
+      } catch (error) {
+        const retryable = error instanceof ApiError && (error.status === 0 || error.status >= 500);
+        if (!retryable || attempt >= GET_RETRY_DELAYS_MS.length) throw error;
+        await new Promise((resolve) => setTimeout(resolve, GET_RETRY_DELAYS_MS[attempt]));
+      }
+    }
+  }
+
+  function sharedGet<T>(path: string, params?: Params): Promise<{ data: T }> {
+    const key = `${baseURL}${path}?${JSON.stringify(params ?? {})}`;
+    const existing = pendingGets.get(key);
+    if (existing) return existing as Promise<{ data: T }>;
+    const promise = getWithRetry<T>(path, params).finally(() => pendingGets.delete(key));
+    pendingGets.set(key, promise);
+    return promise;
+  }
+
   return {
-    get: <T>(path: string, options?: RequestOptions) => request<T>('GET', path, options?.params),
+    get: <T>(path: string, options?: RequestOptions) => sharedGet<T>(path, options?.params),
     post: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>('POST', path, options?.params, body),
   };
 }

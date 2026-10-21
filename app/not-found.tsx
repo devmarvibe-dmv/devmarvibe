@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { BrandLogo } from '@/components/brand-logo';
-import { SubpageFooter } from '@/components/subpage-footer';
+import { SiteFooter } from '@/components/site-footer';
 
 export const metadata: Metadata = {
   title: 'Page not found',
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const POPULAR_LINKS = [
   ['Our services', '/#services'],
+  ['Packages', '/packages'],
   ['About DevMarvibe', '/#about'],
   ['Share a testimonial', '/testimonials/request'],
 ] as const;
@@ -32,13 +33,13 @@ export default function NotFound() {
         <p className="mt-6 max-w-md text-lg leading-8 text-slate-500">The page you’re looking for doesn’t exist, moved, or never shipped. Let’s get you back on track.</p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
           <Link href="/" className="button-primary">Back to home <ArrowRight size={18} /></Link>
-          <Link href="/#contact" className="button-secondary">Talk to us <ChevronRight size={18} /></Link>
+          <Link href="/contact" className="button-secondary">Talk to us <ChevronRight size={18} /></Link>
         </div>
         <nav aria-label="Popular pages" className="mt-10">
           <ul className="flex flex-wrap justify-center gap-x-6 text-sm font-semibold text-teal-700">{POPULAR_LINKS.map(([label, href]) => <li key={href}><Link href={href} className="tap-target hover:text-ink">{label}</Link></li>)}</ul>
         </nav>
       </div>
     </main>
-    <SubpageFooter />
+    <SiteFooter />
   </div>;
 }

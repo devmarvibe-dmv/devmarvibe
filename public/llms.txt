@@ -7,7 +7,8 @@
 - [Home](https://devmarvibe.com/): services, products, client stories and the contact form
 - [Services](https://devmarvibe.com/#services): what DevMarvibe offers
 - [Products](https://devmarvibe.com/#products): ready-made software products
-- [Contact](https://devmarvibe.com/#contact): send a project enquiry
+- [Packages](https://devmarvibe.com/packages): Starter (Launchpad), Growth Studio and Enterprise Suite web and mobile app packages, with a comparison table
+- [Contact us](https://devmarvibe.com/contact): send a project enquiry, optionally for a specific package
 - [Share a testimonial](https://devmarvibe.com/testimonials/request): clients and partners can submit feedback for review
 - [Report a security issue](https://devmarvibe.com/security): responsible disclosure form
 
@@ -21,6 +22,14 @@
 - Paid Campaigns: data-led PPC and ad campaigns focused on reach, conversion and ROI
 - SEO: search strategies that bring qualified traffic
 - Accounting & Tax Solutions: financial support for compliance and business decisions
+
+## Packages
+
+Every package is also available as an Android and iOS app with the same scope.
+
+- Starter (Launchpad): the client supplies the content; DevMarvibe builds a responsive, interactive website hosted and managed on console.devmarvibe.com. Designer and content writer cost extra. Price on request.
+- Growth Studio: done for you — designer, content writer and market, competitor and keyword research included; integrations such as payments, notifications, maps and analytics; runs on console.devmarvibe.com, with console API usage billed separately. Price on request.
+- Enterprise Suite: a fully custom web application with its own admin panel, dedicated database, user roles, integrations, reports, testing and deployment. Quoted per project.
 
 ## Products
 

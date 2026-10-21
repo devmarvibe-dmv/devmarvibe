@@ -35,9 +35,24 @@ export function ScrollReveal() {
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
 
+    // Tracked here rather than as an attribute: touching server-rendered markup before
+    // React hydrates it causes "Extra attributes from the server" warnings.
+    const seen = new WeakSet<Element>();
+    let retryTimer: number | undefined;
+    let retries = 0;
+    // React tags each DOM node it has hydrated with a "__reactFiber$…" key.
+    const isHydrated = (element: Element) => Object.keys(element).some((key) => key.startsWith('__reactFiber$'));
+
     const prepare = (element: Element) => {
-      if (!(element instanceof HTMLElement) || element.dataset.revealSeen) return;
-      element.dataset.revealSeen = 'true';
+      if (!(element instanceof HTMLElement) || seen.has(element)) return;
+      if (!isHydrated(element)) {
+        // Part of a section still waiting to hydrate (e.g. a lazy chunk): try again shortly.
+        if (retries < 25 && retryTimer === undefined) {
+          retryTimer = window.setTimeout(() => { retryTimer = undefined; retries += 1; scan(document); }, 200);
+        }
+        return;
+      }
+      seen.add(element);
       // Already on screen: leave it as it is rather than hiding and re-animating it.
       if (element.getBoundingClientRect().top < window.innerHeight) return;
       element.dataset.revealBound = 'true';
@@ -65,6 +80,7 @@ export function ScrollReveal() {
     return () => {
       observer.disconnect();
       mutations.disconnect();
+      window.clearTimeout(retryTimer);
     };
   }, [pathname]);
 

@@ -14,6 +14,6 @@ export function BrandLogo({ light = false, height = 100, priority = false, class
     priority={priority}
     sizes={`${width}px`}
     className={`w-auto object-contain ${className}`}
-    style={{ height }}
+    style={{ height, width: 'auto' }}
   />;
 }

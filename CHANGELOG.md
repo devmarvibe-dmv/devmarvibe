@@ -7,6 +7,60 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-21
+
+Packages and contact pages, a redesigned footer, updated About stats, and more reliable loading of console content.
+
+### Added
+
+- **`/packages` page:** the three web & mobile packages.
+  - Package cards for Starter (Launchpad), Growth Studio and Enterprise Suite, with a Website / Mobile app switch that shows each package's app scope.
+  - A comparison table that scrolls inside its own box on phones.
+  - App packages, plus what's included in every app package.
+  - Console access, API charges, add-ons and general terms.
+  - Every "Get a quote" button opens `/contact` with that package and platform pre-selected.
+- **`/contact` page:**
+  - A dedicated contact page with email, phone, "What happens next" (reply → quote with a 50% advance → build and launch) and a link to compare packages.
+  - The form adds a package picker, a "Build it as" choice (website, mobile app or both) and an optional company field.
+  - It is pre-filled from `?package=` and `?platform=`. The package, platform and project type go to the console in the contact `services` field.
+- `data/packages.ts` is the single source for package content, comparison rows, add-ons and terms. Set prices there.
+- Shared components: `ContactForm` (used on the home page and `/contact`), `SubpageHeader`, `TrackVisit` and `PackageCards`.
+- Links to the new pages from:
+  - the home nav and footer (Packages) and a "Compare our web & app packages" link in the home contact section
+  - the inner-page footer (Packages, Contact us) and the 404 page
+  - the sitemap and `llms.txt`, which now has a packages summary.
+
+### Changed
+
+- **About stats** now read **5** years building, **10+** projects shipped and **5+** teams supported, in a three-column row. They replace 8+ years, 120+ projects, 42 teams and 14 specialists; the "Specialists" stat was removed.
+- **Redesigned footer** (`components/site-footer.tsx`), shared by every page. It replaces the old home footer and the inner-page `SubpageFooter`.
+  - A "Have a project in mind?" band with **Get a quote** and **Compare packages** (hidden on `/contact`).
+  - Four columns: brand (logo, tagline, social links, "Accepting new projects"), **Company**, **Packages** (each linking to its card on `/packages`, plus Mobile apps) and **Get in touch** (email, phone, Contact us, testimonial, security).
+  - A bottom bar with copyright, version and a **Back to top** button.
+  - Brand grid and orbit rings in the background. The rings are desktop only, kept out of the way of the text.
+  - The footer now sits outside `<main>` on every page, so screen readers recognise it as the page footer.
+  - The Products and security links follow the console's data and module switches.
+- `public/Mainlogo_white.png` is re-framed to exactly 2:1 (1000×500, artwork unchanged in size), so next/image's resized copies keep whole-pixel widths.
+
+### Fixed
+
+- **Products didn't show on some page loads.** The home page fires about 12 console requests at once. Under that burst the console slows to 6–8 s and returns 500s, so the products request sometimes failed or was still pending.
+  - The site now sends at most 4 console requests at a time, in page order, and identical requests made at the same time share one response.
+  - With this change, products showed on 3 of 3 loads, where they had failed on 1 of 3.
+- The dev hydration warning "Extra attributes from the server: data-reveal-seen" is gone. The scroll-reveal now tracks elements in memory and waits until React has hydrated an element before touching it.
+- **Products (or the whole site) sometimes didn't show.** When the console cold-starts it can answer slowly or return a 500.
+  - A single failed products request hid the Products section for that visit.
+  - The connection check gave up after 5 seconds and treated any server error as a firewall block, replacing the whole site with "We couldn't reach our services".
+  - GET requests now retry up to twice (after 0.7 s and 2 s) on a network error or 5xx. Form submissions are never retried.
+  - The connection check now waits 10 seconds, tries twice, and counts any HTTP response as reachable.
+  - Verified by forcing 500s on the first products and connection-check requests: the page and products still load.
+- Fixed the dev warning "Image … has either width or height modified" on the logos by adding `width: auto`.
+- "Back to DevMarvibe" on inner pages no longer shows a doubled gap between "Back" and "to DevMarvibe".
+
+### Notes
+
+- Internal notes from the packages document are not published: "price to be set", "timeline to be set", "adjust as needed", "open items" and the byline. Prices show as "Price on request" (Starter, Growth Studio) and "Quoted per project" (Enterprise Suite).
+
 ## [0.3.0] - 2026-10-18
 
 Performance, SEO and production-readiness pass.

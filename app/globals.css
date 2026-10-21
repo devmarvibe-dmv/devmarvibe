@@ -66,6 +66,25 @@ body {
     .section-pad { padding-top: 7rem; padding-bottom: 7rem; }
   }
 
+  /* Selectable option card wrapping a radio or checkbox. */
+  .choice-card {
+    display: flex;
+    min-height: 44px;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #cbd5e1;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink);
+    transition: border-color 0.2s, background-color 0.2s;
+  }
+  .choice-card:hover { border-color: #5eead4; }
+  .choice-card:has(:checked) { border-color: #14b8a6; background-color: #f0fdfa; }
+  .choice-card:has(:focus-visible) { outline: 2px solid #14b8a6; outline-offset: 2px; }
+
   /* Text links get a 44px-tall hit area for touch without changing how they look. */
   .tap-target {
     display: inline-flex;
@@ -306,6 +325,17 @@ body {
   .social-link:hover {
     border-color: #5eead4;
     color: #5eead4;
+  }
+
+  .footer-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 85%);
+  }
+
+  .footer-orbit {
+    border-radius: 9999px;
+    border: 1px solid rgba(94, 234, 212, 0.12);
   }
 
   .footer-heading {
