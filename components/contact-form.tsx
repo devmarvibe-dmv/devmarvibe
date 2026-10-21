@@ -69,11 +69,11 @@ export const ContactForm = memo(function ContactForm({ projectTypes, withPackage
 
   return <form className={`rounded-[28px] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-8 ${className}`} onSubmit={handleSubmit}>
     <div className="grid gap-5 sm:grid-cols-2">
-      <label className="field-label">Your name<input required name="name" autoComplete="name" placeholder="Aarav Mehta" className="field-input" /></label>
-      <label className="field-label">Work email<input required type="email" name="email" autoComplete="email" placeholder="you@company.com" className="field-input" /></label>
-      <label className="field-label">Phone number<PhoneInput name="phone" placeholder="99599 25779" /></label>
+      <label className="field-label">Your name<input required name="name" autoComplete="name" className="field-input" /></label>
+      <label className="field-label">Work email<input required type="email" name="email" autoComplete="email" className="field-input" /></label>
+      <label className="field-label">Phone number<PhoneInput name="phone" /></label>
       {withPackage
-        ? <label className="field-label">Company <span className="font-normal text-slate-500">(optional)</span><input name="company" autoComplete="organization" placeholder="Company name" className="field-input" /></label>
+        ? <label className="field-label">Company <span className="font-normal text-slate-500">(optional)</span><input name="company" autoComplete="organization" className="field-input" /></label>
         : <label className="field-label">Project type<select name="project" className="field-input">{projectTypes.map((type) => <option key={type}>{type}</option>)}</select></label>}
     </div>
 
@@ -88,7 +88,7 @@ export const ContactForm = memo(function ContactForm({ projectTypes, withPackage
       </fieldset>
     </div>}
 
-    <label className="field-label mt-5">Tell us about your project<textarea required name="message" rows={5} placeholder="What are you hoping to build?" className="field-input resize-none" /></label>
+    <label className="field-label mt-5">Tell us about your project<textarea required name="message" rows={5} className="field-input resize-none" /></label>
     <button className="button-primary mt-6 w-full sm:w-auto" type="submit" disabled={submitting}>{sent ? <>Message received <Check size={18} aria-hidden="true" /></> : submitting ? 'Sending…' : <>Send message <ArrowRight size={18} aria-hidden="true" /></>}</button>
     {sent && <p className="mt-4 text-sm font-medium text-teal-700" role="status">Thanks — our team will be in touch shortly.</p>}
     {error && <p className="mt-4 text-sm font-medium text-red-600" role="alert">{error}</p>}

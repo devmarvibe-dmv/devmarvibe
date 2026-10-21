@@ -75,20 +75,20 @@ export default function SecurityPage() {
         <Link href="/" className="button-primary mt-8">Return home <ArrowLeft size={16} /></Link>
       </div> : <form onSubmit={handleSubmit} className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-xl shadow-slate-900/5 sm:p-10">
         <div className="mb-9 flex items-center gap-4 rounded-2xl bg-ink p-5 text-white"><div className="rounded-xl bg-teal-400/15 p-3 text-teal-300"><ShieldCheck size={21} /></div><p className="text-sm leading-6 text-slate-300">Only test against accounts and data you own, and avoid anything that could disrupt the service for others.</p></div>
-        <label className="field-label">Summary *<input required name="title" maxLength={200} className="field-input" placeholder="e.g. Reflected XSS on the search page" /></label>
+        <label className="field-label">Summary *<input required name="title" maxLength={200} className="field-input" /></label>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <label className="field-label">Severity<select name="severity" defaultValue="" className="field-input"><option value="">Not sure</option>{SEVERITIES.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
           <label className="field-label">Type of issue<select name="vulnerabilityType" defaultValue="" className="field-input"><option value="">Select one</option>{VULNERABILITY_TYPES.map((option) => <option key={option}>{option}</option>)}</select></label>
         </div>
-        <label className="field-label mt-5">Affected URL<input type="url" name="affectedUrl" maxLength={1000} className="field-input" placeholder="https://devmarvibe.com/..." /></label>
-        <label className="field-label mt-5">Description *<textarea required name="description" rows={5} className="field-input resize-none" placeholder="What is the issue and where does it occur?" /></label>
-        <label className="field-label mt-5">Steps to reproduce<textarea name="stepsToReproduce" rows={4} className="field-input resize-none" placeholder="1. Open... 2. Enter... 3. Observe..." /></label>
-        <label className="field-label mt-5">Impact<textarea name="impact" rows={3} className="field-input resize-none" placeholder="What could an attacker do with this?" /></label>
+        <label className="field-label mt-5">Affected URL<input type="url" name="affectedUrl" maxLength={1000} className="field-input" /></label>
+        <label className="field-label mt-5">Description *<textarea required name="description" rows={5} className="field-input resize-none" /></label>
+        <label className="field-label mt-5">Steps to reproduce<textarea name="stepsToReproduce" rows={4} className="field-input resize-none" /></label>
+        <label className="field-label mt-5">Impact<textarea name="impact" rows={3} className="field-input resize-none" /></label>
         <div className="mt-8 border-t border-slate-200 pt-8">
           <h2 className="text-lg font-semibold">How can we reach you? <span className="font-normal text-slate-500">(optional)</span></h2>
           <div className="mt-5 grid gap-5 sm:grid-cols-2">
-            <label className="field-label">Your name<input name="reporterName" className="field-input" placeholder="Name or handle" /></label>
-            <label className="field-label">Email address<input type="email" name="reporterEmail" className="field-input" placeholder="you@example.com" /></label>
+            <label className="field-label">Your name<input name="reporterName" className="field-input" /></label>
+            <label className="field-label">Email address<input type="email" name="reporterEmail" className="field-input" /></label>
           </div>
         </div>
         {error && <p className="mt-5 text-sm font-medium text-red-600" role="alert">{error}</p>}

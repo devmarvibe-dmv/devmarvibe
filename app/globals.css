@@ -305,7 +305,6 @@ body {
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .field-input::placeholder { color: #94a3b8; }
   .field-input:focus {
     border-color: #14b8a6;
     box-shadow: 0 0 0 2px #ccfbf1;

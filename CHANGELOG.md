@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-21
+
+Cleanup: form placeholder text and the Netlify hosting setup removed.
+
+### Removed
+
+- **Form placeholder text:** removed the grey hint text from every form field (22 in all) in the contact form (home and `/contact`), the testimonial form, the security report form and the phone field's country search.
+  - Examples removed include "Aarav Mehta", "you@company.com", "99599 25779" and "What are you hoping to build?".
+  - Every field keeps its visible label, so the forms work the same.
+  - The `PhoneInput` component no longer takes a `placeholder` setting, and the unused hint-text styles were deleted.
+- **Netlify hosting setup:** the site is deployed on Vercel.
+  - Deleted `netlify.toml` and uninstalled the `@netlify/plugin-nextjs` dependency.
+  - The "only index production" check in `lib/seo.ts` now uses only Vercel's `VERCEL_ENV`: production deploys are indexed, preview and UAT deploys get `Disallow: /`. Outside Vercel it falls back to `NODE_ENV`.
+
 ## [0.4.0] - 2026-10-21
 
 Packages and contact pages, a redesigned footer, updated About stats, and more reliable loading of console content.

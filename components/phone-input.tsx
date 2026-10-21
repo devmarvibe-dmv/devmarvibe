@@ -20,7 +20,7 @@ function matches(country: Country, query: string): boolean {
 }
 
 /** Phone number with a searchable, virtualized country-code picker. Submits "+91 98765 43210" under `name`. */
-export const PhoneInput = memo(function PhoneInput({ name, defaultIso2 = 'IN', placeholder, required }: { name: string; defaultIso2?: string; placeholder?: string; required?: boolean }) {
+export const PhoneInput = memo(function PhoneInput({ name, defaultIso2 = 'IN', required }: { name: string; defaultIso2?: string; required?: boolean }) {
   const [countries, setCountries] = useState<Country[]>([DEFAULT_COUNTRY]);
   const [iso2, setIso2] = useState(defaultIso2);
   const [number, setNumber] = useState('');
@@ -114,8 +114,7 @@ export const PhoneInput = memo(function PhoneInput({ name, defaultIso2 = 'IN', p
               aria-expanded="true"
               aria-controls={listId}
               aria-activedescendant={filtered[activeIndex] ? `${listId}-${filtered[activeIndex].iso2}` : undefined}
-              placeholder="Country or code"
-              className="h-10 w-full bg-transparent text-sm text-ink outline-none placeholder:text-slate-400"
+              className="h-10 w-full bg-transparent text-sm text-ink outline-none"
             />
           </label>
           {filtered.length > 0
@@ -128,10 +127,9 @@ export const PhoneInput = memo(function PhoneInput({ name, defaultIso2 = 'IN', p
         type="tel"
         value={number}
         onChange={(event) => setNumber(event.target.value)}
-        placeholder={placeholder}
         required={required}
         aria-label="Phone number"
-        className="-my-3 w-full min-w-0 border-0 bg-transparent px-0 py-3 text-sm text-ink outline-none placeholder:text-slate-400"
+        className="-my-3 w-full min-w-0 border-0 bg-transparent px-0 py-3 text-sm text-ink outline-none"
       />
       <input type="hidden" name={name} value={combined} />
     </div>
