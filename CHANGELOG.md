@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.4.1] - 2026-10-21
+## [2.4.1] - 2026-10-21
 
 Cleanup: form placeholder text and the Netlify hosting setup removed.
 
